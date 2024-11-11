@@ -1,0 +1,30 @@
+%{
+#include <stdio.h>
+int lines = 0;
+int words = 0;
+int chars = 0;
+%}
+%%
+[a-zA-Z]+  { 
+    words++; 
+    chars += yyleng; 
+}
+[ \t]+     ;  
+\n         { 
+    lines++; 
+    chars++; 
+    printf("Line %d: %d words, %d characters\n", lines, words, chars);
+    words = 0; 
+    chars = 0; 
+}
+.          chars++;  
+%%
+int main() {
+    yylex();  
+    printf("\nFinal Counts:\n");
+    printf("Total Lines: %d\n", lines);
+    return 0;
+}
+int yywrap() {
+    return 1;
+}

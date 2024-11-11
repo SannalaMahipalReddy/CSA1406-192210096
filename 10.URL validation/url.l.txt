@@ -1,0 +1,17 @@
+%{
+%}
+%%
+((http)|(ftp))s?:\/\/[a-zA-Z0-9](.[a-z])+(.[a-zA-Z0-9+=?]*)* {printf("\n valid url\n");}
+.+ {printf("\n Invalid url\n");}
+
+%%
+
+int yywrap() {
+    return 1;
+}
+
+int main() {
+    printf("\n Enter the URL: ");
+    yylex(); 
+    return 0;
+}

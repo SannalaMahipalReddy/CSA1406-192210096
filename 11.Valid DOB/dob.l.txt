@@ -1,0 +1,40 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+int is_leap_year(int year) {
+    return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
+}
+int is_valid_date(int day, int month, int year) {
+    if (month < 1 || month > 12) return 0;
+
+    int days_in_month[] = {31, (is_leap_year(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    return (day >= 1 && day <= days_in_month[month - 1]);
+}
+%}
+%%
+[0-3]?[0-9]"/"[0-1]?[0-9]"/"[12][0-9]{3} {
+    int day = atoi(yytext);
+    int month = atoi(yytext + 3);
+    int year = atoi(yytext + 6);
+
+    if (is_valid_date(day, month, year)) {
+        printf("\nValid DOB: %s\n", yytext);
+    } else {
+        printf("\nInvalid DOB: %s\n", yytext);
+    }
+}
+.|\n
+%%
+int yywrap() {
+    return 1;
+}
+int main() {
+    char input[100];
+    printf("Enter DOB (DD/MM/YYYY): ");
+    fgets(input, 100, stdin);
+    YY_BUFFER_STATE buffer = yy_scan_string(input);
+    yylex();
+    yy_delete_buffer(buffer);
+    return 0;
+}

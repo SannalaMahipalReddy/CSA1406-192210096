@@ -1,0 +1,30 @@
+%{
+#include <stdio.h>
+%}
+
+%%
+
+[a-zA-Z]+  printf("Word: %s\n", yytext);
+
+"=="  printf("Equal to: ==\n");
+"!="  printf("Not equal to: !=\n");
+">"   printf("Greater than: >\n");
+"<"   printf("Less than: <\n");
+">="  printf("Greater than or equal to: >=\n");
+"<="  printf("Less than or equal to: <=\n");
+
+[ \t\n\r]  ; 
+.  printf("Invalid character: %c\n", *yytext);
+
+%%
+
+int main() {
+    yylex();
+    return 0;
+}
+
+int yywrap() {
+    return 1;
+}
+
+

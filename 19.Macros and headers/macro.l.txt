@@ -1,0 +1,22 @@
+%{
+#include <stdio.h>
+int macro_count = 0;
+int header_count = 0;
+%}
+%%
+"#define"  macro_count++;
+"#include"  header_count++; 
+[ \t\n\r]  ;  
+.  ;  
+%%
+int main() {
+    macro_count = 0;
+    header_count = 0;
+    yylex();
+    printf("Macros: %d\n", macro_count);
+    printf("Headers: %d\n", header_count);
+    return 0;
+}
+int yywrap() {
+    return 1;
+}

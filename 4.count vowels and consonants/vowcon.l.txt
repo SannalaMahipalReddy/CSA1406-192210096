@@ -1,0 +1,17 @@
+%{
+int vowels=0;
+int consonants=0;
+%}
+%%
+[AEIOUaeiou] {vowels++;}             
+[b-df-hj-np-tv-zB-DF-HJ-NP-TV-Z] {consonants++;}  
+.                                  
+%%
+int yywrap() {return 1;}
+int main() {
+printf("Enter text: ");
+yylex();  
+printf("\nNumber of vowels:%d\n",vowels);
+printf("\nNumber of consonants:%d\n",consonants);
+return 0;
+}

@@ -1,0 +1,24 @@
+%{
+#include <stdio.h>
+int comment_lines = 0;
+%}
+
+%%
+
+"//"[^\n]*\n  comment_lines++; printf("Comment line: %s", yytext);
+"/*"([^*]|"*"[^/])*"*/"  comment_lines++; printf("Comment block: %s", yytext);
+\n                         
+.                           
+
+%%
+
+int yywrap() {
+    printf("Total comment lines: %d\n", comment_lines);
+    return 1;
+}
+
+int main() {
+    yyin = fopen("sample1.txt", "r");
+    yylex();
+    return 0;
+}

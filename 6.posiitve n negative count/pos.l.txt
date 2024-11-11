@@ -1,0 +1,17 @@
+%{
+int pos_count = 0;
+int neg_count = 0;
+%}
+%%
+[-][0-9]+ { neg_count++; }  
+[0-9]+    { pos_count++; }  
+.         ;                      
+%%
+int yywrap(){}
+int main() {
+    printf("Enter numbers: ");
+    yylex();
+    printf("Number of positive numbers: %d\n", pos_count);
+    printf("Number of negative numbers: %d\n", neg_count);
+    return 0;
+}

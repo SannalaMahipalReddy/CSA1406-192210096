@@ -1,0 +1,36 @@
+%{
+#include <stdio.h>
+#include <string.h>
+
+int count = 0;  // Counter to store frequency of the target word
+
+%}
+
+%%
+
+
+"text"  { count++; }  // Increment count when target word is found
+[ \t\n]+        { /* Skip whitespace */ }  // Skip whitespace
+.               { /* Skip any other characters */ }
+
+%%
+
+int yywrap() {
+    return 1;
+}
+
+int main() {
+    yyin = fopen("frequencyofword.txt", "r");  // Open the input file
+    if (!yyin) {
+        perror("Failed to open input file");
+        return 1;
+    }
+
+    yylex();  // Perform lexical analysis
+
+    // Print the frequency of the target word
+    printf("The word  appeared %d times in the file.\n",count);
+
+    fclose(yyin);  // Close the input file
+    return 0;
+}
